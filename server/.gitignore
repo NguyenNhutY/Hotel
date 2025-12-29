@@ -1,0 +1,11 @@
+.env
+.env.local
+.env.development
+.env.production
+
+firebase-adminsdk*.json
+serviceAccountKey.json
+
+node_modules/
+dist/
+build/
