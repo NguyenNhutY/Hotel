@@ -18,7 +18,7 @@ const app = express();
 app.use(cors()); // Enable Cross-Origin Resource Sharing
 
 // API to listen to Stripe Webhooks
-app.post("/api/stripe",express.raw({ type: "application/json" }),stripeWebhooks);
+// app.post("/api/stripe",express.raw({ type: "application/json" }),stripeWebhooks);
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -33,5 +33,5 @@ app.use("/api/hotels", hotelRouter);
 app.use("/api/rooms", roomRouter);
 app.use("/api/bookings", bookingRouter);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
