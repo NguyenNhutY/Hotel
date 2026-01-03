@@ -1,11 +1,15 @@
-
 // Get User data using Token (JWT)
 // GET /api/user/
 export const getUserData = async (req, res) => {
   try {
+    console.log(req.user);
     const role = req.user.role;
     const recentSearchedCities = req.user.recentSearchedCities;
-    res.json({ success: true, role, recentSearchedCities });
+    res.json({
+      success: true,
+      role: req.user.role,
+      recentSearchedCities: req.user.recentSearchedCities,
+    });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -29,4 +33,30 @@ export const storeRecentSearchedCities = async (req, res) => {
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
+};
+
+// POST /api/homestay/register
+
+export const registerHomestay = async (req, res) => {
+  const user = req.user;
+
+  try {
+    const { homestayName, location, description, pricePerNight } = req.body;
+
+    if (!homestayName || !location || !description || !pricePerNight) {
+      return res.json({ success: false, message: "All fields are required" });
+    }
+
+    user.homestay = {
+      name: homestayName,
+      location,
+      description,
+      pricePerNight,
+    };
+
+    user.role = "hotelOwner";
+    await user.save();
+
+    res.json({ success: true });
+  } catch (err) {}
 };

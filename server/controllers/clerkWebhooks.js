@@ -22,10 +22,11 @@ const clerkWebhooks = async (req, res) => {
     const { data, type } = req.body;
 
     const userData = {
-      _id: data.id,
+      clerkId: data.id,
       email: data.email_addresses[0].email_address,
       username: data.first_name + " " + data.last_name,
       image: data.image_url,
+      role: data.public_metadata?.role || "guest",
     };
 
     // Switch Cases for differernt Events
@@ -36,12 +37,14 @@ const clerkWebhooks = async (req, res) => {
       }
 
       case "user.updated": {
-        await User.findByIdAndUpdate(data.id, userData);
+        await User.findOneAndUpdate({ clerkId: data.id }, userData, {
+          new: true,
+        });
         break;
       }
 
       case "user.deleted": {
-        await User.findByIdAndDelete(data.id);
+        await User.findOneAndDelete({ clerkId: data.id });
         break;
       }
 

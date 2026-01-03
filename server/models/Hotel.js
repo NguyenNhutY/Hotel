@@ -6,7 +6,7 @@ const hotelSchema = new Schema(
     name: { type: String, required: true },
     address: { type: String, required: true },
     contact: { type: String, required: true },
-    owner: { type: String, ref: "User", required: true },
+    owner: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
     city: { type: String, required: true },
   },
   { timestamps: true }
@@ -14,4 +14,4 @@ const hotelSchema = new Schema(
 
 const Hotel = mongoose.model("Hotel", hotelSchema);
 
-export default Hotel
+export default Hotel;

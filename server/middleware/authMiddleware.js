@@ -1,13 +1,24 @@
+import { getAuth } from "@clerk/express";
 import User from "../models/User.js";
 
-// Middleware to check if user is authenticated
 export const protect = async (req, res, next) => {
-  const { userId } = req.auth;
-  if (!userId) {
-    res.json({ success: false, message: "not authenticated" });
-  } else {
-    const user = await User.findById(userId);
+  try {
+    const { userId } = getAuth(req); // ✅ ĐÚNG
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = await User.findOne({ clerkId: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     req.user = user;
     next();
+  } catch (err) {
+    console.error("AUTH ERROR:", err);
+    res.status(500).json({ message: err.message });
   }
 };

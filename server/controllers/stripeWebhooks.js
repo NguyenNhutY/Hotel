@@ -21,7 +21,7 @@ export const stripeWebhooks = async (request, response) => {
   if (event.type === "payment_intent.succeeded") {
     const paymentIntent = event.data.object;
     const paymentIntentId = paymentIntent.id;
-
+Q
     // Getting Session Metadata
     const session = await stripeInstance.checkout.sessions.list({
       payment_intent: paymentIntentId,
